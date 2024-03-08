@@ -1,7 +1,7 @@
 (ns dolisp.core)
 
 (defn dependencies [args & body]
-  (println "Arguments:" args)
+  (println "Dependencies:" args)
   body
 )
 
@@ -54,6 +54,7 @@
                         )
           ]
           ;; TODO I guess I have to return a Task record instead of a function, though.
+          ;; TODO Can't I inspect the arguments of a function without wrapping the defintion in my task-fn macro?
       (run! #(%1) funcs) ;; run the expressions in the body
       )
      )
