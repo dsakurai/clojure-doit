@@ -1,9 +1,8 @@
 (ns dolisp.core)
 
-(defmacro dependencies [args & body]
-  `(do
-     (println "Arguments:" (list ~@args))
-     ~@body)
+(defn dependencies [args & body]
+  (println "Arguments:" args)
+  body
 )
 
 ;; Maybe this was not useful
@@ -40,9 +39,7 @@
   "I'm the entry point for this application."
   (;; function
     (task-fn
-      [a b] ;; Change this to something like 'let' so that we can execute the function without an argument
-            ;; It's simpler to accept a list and not use arg names, though. 
-            ;; But how do we specify output files, then?
+      [a b]
       (println (+ a b))
     )
     ;; arguments
@@ -50,10 +47,14 @@
     )
 
   (let [a 1 b 2]
-    (;; execute this task (aka function)
-     (dependencies [a]
-                   #(println (+ a b)) ;; anonymous function
-                   )
+    (let [funcs
+          (dependencies [a]
+                        #(println (+ a b)) ;; anonymous function
+                        #(println (- a b)) ;; anonymous function
+                        )
+          ]
+          ;; TODO I guess I have to return a Task record instead of a function, though.
+      (run! #(%1) funcs) ;; run the expressions in the body
+      )
      )
-    )
   )
