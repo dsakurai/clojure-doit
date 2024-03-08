@@ -16,7 +16,7 @@
   (;; function
     (task-fn
       [a b]
-      (println a b)
+      (println (+ a b))
     )
     ;; arguments
     1 2
